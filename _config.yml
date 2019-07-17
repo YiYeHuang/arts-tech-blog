@@ -1,35 +1,40 @@
-title: Tech -ARTS- Blog
-url: https://YiYeHuang.github.io
-author: tony huang
-email: tonyhuang0446@hotmail.com
-description: > # this means to ignore newlines until "show_exerpts:"
-  Tech notes, one at a time. For weekly ARTS blog.
-show_excerpts: false # set to true to show excerpts on the homepage
-baseurl: "YiYeHuang.github.io"
-github_username: YiYeHuang
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 
-paginate: 5
-paginate_path: "/blog/page:num/"
-
-tag_permalink_style: pretty
-tag_page_layout: tag_page
-tag_page_dir: tag
-
-# jekyll-dash date format
-# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
-dash:
-  date_format: "%b %-d, %Y"
-
-  # generate social links in footer
-  # supported colors: green, red, orange, blue, cyan, pink, teal, yellow, indigo, purple
-  social_links:
-    - url: https://github.com/YiYeHuang
-      icon: github-square
-      color: yellow
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: TH Tech Block
+email: tonyhuang0446@gmail.com
+description: >- # this means to ignore newlines until "baseurl:"
+  Tech notes, one at a time. Weekly ARTS blog.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+github_username:  YiYeHuang
 
 # Build settings
-theme: jekyll-dash
-
+markdown: kramdown
+theme: minima
 plugins:
-  - liquid-md5
-  - jekyll/tagging
+  - jekyll-feed
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/

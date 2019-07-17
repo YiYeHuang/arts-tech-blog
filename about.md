@@ -1,8 +1,9 @@
 ---
 layout: post
 title:  "ARTS的初衷"
-date:   2019-07-14
-tags: introduction
+date:   2019-07-16
+categories: arts
+tag: intro
 ---
 ARTS的初衷
 
