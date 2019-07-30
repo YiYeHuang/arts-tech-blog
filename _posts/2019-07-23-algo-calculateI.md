@@ -167,7 +167,4 @@ pop-> result1, pop->sign, pop->result2 变成 pop->sign, pop-> result1, pop->res
         return res1;
     }
 ```
-又因为现在的输入主体的数字之间有空格，需要额外处理在看到' '的时候主动push进数字，并且位数计算清零。
-
-
-
+又因为现在的输入主体的数字之间有空格，需要额外处理在看到' '的时候主动push进数字，并且位数计算清零.
