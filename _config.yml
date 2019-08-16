@@ -2,7 +2,7 @@
 title: Tony Huang Tech Notes
 tagline: 'ARTS weekly blog'
 description: 'Algorithm, Reviews, Tips and Shares'
-baseurl: "/thuang"
+baseurl: ""
 logo: '/public/logo.png'
 
 # Site configurations
@@ -24,12 +24,11 @@ version: 1.0.0
 # About/contact
 author:
   name: Tony Huang
-  gravatar: tonyhuang0446@gmail.com
   description: 'Algorithm, Reviews, Tips and Shares'
+  gravatar: 03ce068797689bc04d1b2d99169d4250
   contact:
     linkedin:  https://www.linkedin.com/in/yiyehuang
     github:    https://github.com/YiYeHuang
-    email:     tonyhuang0446@gmail.com
 
 # Navigation (2nd level links supported)
 nav:
