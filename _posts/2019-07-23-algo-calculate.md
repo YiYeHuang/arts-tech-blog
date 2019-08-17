@@ -134,7 +134,7 @@ tag: [leetcode, stack, hard]
     }
 ```
 
-#### 变形:
+#### 变形1:
 有时候，题会有变形，将正序运算变成prefix operator. e.g: (-7(+8 9))
 这个时候需要略做改动，要点还是一样，抓住input永远是valid的这一点，不用做过多的case考虑，
 
@@ -168,7 +168,6 @@ pop-> result1, pop->sign, pop->result2 变成 pop->sign, pop-> result1, pop->res
     }
 ```
 又因为现在的输入主体的数字之间有空格，需要额外处理在看到' '的时候主动push进数字，并且位数计算清零.
-
 
 
 ### 变形 227. Basic CalculatorII
@@ -257,4 +256,151 @@ pop-> result1, pop->sign, pop->result2 变成 pop->sign, pop-> result1, pop->res
         }
         return total;
     }
+```
+
+### 变形 772. Basic Calculator III
+
+```text
+772. Basic Calculator III
+ 
+
+Implement a basic calculator to evaluate a simple expression string.
+
+The expression string may contain open ( and closing parentheses ), 
+the plus + or minus sign -, non-negative integers and empty spaces .
+
+The expression string contains only non-negative integers, +, -, *, / operators ,
+open ( and closing parentheses ) and empty spaces . The integer division should truncate toward zero.
+
+You may assume that the given expression is always valid. All intermediate results will be in the range of [-2147483648, 2147483647].
+
+Some examples:
+
+"1 + 1" = 2
+" 6-4 / 2 " = 4
+"2*(5+5*2)/3+(6/2+8)" = 21
+"(2+6* 3+5- (3*14/7+2)*5)+3"=-12
+ 
+
+Note: Do not use the eval built-in library function.
+
+```
+
+基本能猜到的结局了， Calculator I 和 Calculator II的结合。
+按照前两题的经验来看来看，解决括号问题要比解决乘除法难，所以就在第一题的基础上加上第二题的逻辑。
+
+#### 要点 （参考第一题）:
+- 进入calculateStack之前处理好乘除法的问题
+- 需要cache住之前一位的运算符号（只需要乘除）
+
+核心变化部分
+```java
+if (n != 0) {
+
+    // Save the operand on the stack
+    // As we encounter some non-digit.
+    if (lastOperator=='*') {
+        stack.push(operand * (int)stack.pop() );
+        n = 0;
+        operand = 0;
+    }
+    else if (lastOperator=='/') {
+        stack.push(operand / (int)stack.pop());
+        n = 0;
+        operand = 0;
+    } else {
+        stack.push(operand);
+        n = 0;
+        operand = 0;
+    }
+}
+```
+
+```java
+public static int calculate(String s) {
+
+    int operand = 0;
+    int n = 0;
+    Stack<Object> stack = new Stack<Object>();
+
+    char lastOperator = '+';
+
+    for (int i = s.length() - 1; i >= 0; i--) {
+
+        char ch = s.charAt(i);
+
+        if (Character.isDigit(ch)) {
+
+            // Forming the operand - in reverse order.
+            operand = (int) Math.pow(10, n) * (int) (ch - '0') + operand;
+            n += 1;
+
+        } else if (ch != ' ') {
+            if (n != 0) {
+
+                // Save the operand on the stack
+                // As we encounter some non-digit.
+                if (lastOperator=='*') {
+                    stack.push(operand * (int)stack.pop() );
+                    n = 0;
+                    operand = 0;
+                }
+                else if (lastOperator=='/') {
+                    stack.push(operand / (int)stack.pop());
+                    n = 0;
+                    operand = 0;
+                } else {
+                    stack.push(operand);
+                    n = 0;
+                    operand = 0;
+                }
+            }
+            if (ch == '(') {
+
+                int res = calculateStack(stack);
+                stack.pop();
+                // Append the evaluated result to the stack.
+                // This result could be of a sub-expression within the parenthesis.
+                stack.push(res);
+
+            } else {
+                // For other non-digits just push onto the stack.
+                if (ch != '*' && ch != '/') {
+                    stack.push(ch);
+                }
+                lastOperator = ch;
+            }
+        }
+    }
+
+    //Push the last operand to stack, if any.
+    if (n != 0) {
+        stack.push(operand);
+    }
+
+    // Evaluate any left overs in the stack.
+    return calculateStack(stack);
+}
+
+public static int calculateStack(Stack<Object> stack) {
+
+    int res = 0;
+
+    if (!stack.empty()) {
+        res = (int) stack.pop();
+    }
+
+    // Evaluate the expression till we get corresponding ')'
+    while (!stack.empty() && !((char) stack.peek() == ')')) {
+
+        char sign = (char) stack.pop();
+
+        if (sign == '+') {
+            res += (int) stack.pop();
+        } else {
+            res -= (int) stack.pop();
+        }
+    }
+    return res;
+}
 ```
