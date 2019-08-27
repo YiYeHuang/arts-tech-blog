@@ -3,7 +3,7 @@ layout: post
 title:  "一次记忆深刻的线上排错"
 date:   2019-07-16 22:59:53 -0700
 categories: tip
-tag: [notes, AWS, spring boot]
+tag: [AWS, spring boot]
 ---
 
 ### Tips
