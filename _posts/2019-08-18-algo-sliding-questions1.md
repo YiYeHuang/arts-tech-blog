@@ -3,7 +3,7 @@ layout: post
 title:  "Dynamic sliding questions - part 1"
 date:   2019-08-18 15:59:53 -0700
 categories: algorithm
-tag: [leetcode, queue, priority queue, slidingWindow, hard]
+tag: [leetcode, queue, priority queue, slidingWindow]
 ---
 
 ## Algorithm
