@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Pagination with Relative Cursors"
-date:   2019-09-01 15:59:53 -0700
+date:   2019-09-26 15:59:53 -0700
 categories: sharing
 tag: [api, paging, optimize]
 ---
