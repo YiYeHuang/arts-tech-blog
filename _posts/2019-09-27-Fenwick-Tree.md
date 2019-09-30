@@ -7,6 +7,8 @@ tag: [leetcode, binary-index-tree]
 ---
 
 ## Algorithm
+一整个月没有写博客，~~绝对不是因为懒~~, 主要是因为在憋Binary Search的大招，无奈敌人实在太强大，这里预留一个传送门位置，等题做完了写。Binary Search做着做着就心灰意冷，然后做着做着，LeetCode题就开始做歪了。
+不过说到歪的树，这篇就总结一下Fenwick Tree的题，也就是Binary Index Tree
 
 
 为Binary Index Tree量身定做的题是`LeetCode 307. Range Sum Query - Mutable`。不过在分析这题之前先看:
@@ -250,9 +252,67 @@ or -> `sum[j] - lower < sum[i - 1] < sum[j] - upper` where i<=j
 
 (；¬д¬) ？？？？？ 嗯，所以这题只是可以用BIT解，但并不是最优处理办法，divide and conquer的办法代码更简便，但极度烧脑。
 
+Implementation
+- 需要一个数据结构记录所有的sum, sum - low, sum - high,
+- 因为需要在这个数据结构里搜索，可以选择
+    - sort + binary search
+    - 或者push进map做搜索
+- 以下选择sort + binary search
+- build BIT, 和第一个数据结构同size, 走一遍input number list, 建立prefixSum
+- 一边建立建立prefixSum一边在第一个数据结构里寻找prefixSum， 然后取得index build BIT
+- 第二次过input number list
+- 在BIT里query Sum(i) + Upperbound的index
+- 减去在BIT里query Sum(i) + lowerbound的index
+- 这一系列操作的意义是因为第一个数据结构被sort过了，而且input number list是正负随机的，而low一定小于high
+- 所以sum(i) + upperbound很有可能小于，Sum(i) + lowerbound， 这样就没有解
+
+让人精分的implementation
+```java
+public int countRangeSum(int[] nums, int lower, int upper) {
+    long[] sum = new long[nums.length + 1];
+    long[] range = new long[3 * sum.length + 1];
+    int index = 0;
+    range[index++] = sum[0];
+    range[index++] = lower + sum[0] - 1;
+    range[index++] = upper + sum[0];
+
+    for (int i = 1; i < sum.length; i++) {
+        sum[i] = sum[i - 1] + nums[i - 1];
+        range[index++] = sum[i];
+        range[index++] = lower + sum[i] - 1;
+        range[index++] = upper + sum[i];
+    }
+
+    // avoid getting root of the binary indexed tree when doing binary search
+    range[index] = Long.MIN_VALUE; 
+    Arrays.sort(range);
+
+    BinaryIndexTree bitTree = new BinaryIndexTree(range.length);
+
+    // build up the binary indexed tree
+    for (int i = 0; i < sum.length; i++) {
+        bitTree.update(Arrays.binarySearch(range, sum[i]), 1);
+    }
+
+    int count = 0;
+
+    for (int i = 0; i < sum.length; i++) {
+        // get rid of visited elements by adding -1 to the corresponding tree nodes
+        addValue(bit, Arrays.binarySearch(range, sum[i]), -1);
+
+        // valid elements with upper bound (upper + sum[i]) - lower bound (lower + sum[i] - 1)
+        count += bitTree.query(
+            Arrays.binarySearch(range, lower + sum[i] - 1), 
+            Arrays.binarySearch(range, upper + sum[i]));
+    }
+
+    return count;
+}
+```
+题里用long是为了过一些恶心的test case
 
 
-
+跪着长了膝盖疼。。。
  ```text
  315. Count of Smaller Numbers After Self
 
@@ -268,3 +328,74 @@ To the right of 2 there is only 1 smaller element (1).
 To the right of 6 there is 1 smaller element (1).
 To the right of 1 there is 0 smaller element.
  ```
+
+继续暴力
+```java
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int counter = 0;
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[j] < nums[i]) {
+                    counter++;
+                }
+            }
+            list.add(counter);
+        }
+
+        return list;
+    }
+}
+```
+
+每次暴力完了都觉得自己能站起来了，一分析又跪下了。
+
+先分析理想状态，如果要比大小最好是能有序数列，但是又要注意比较的数字的原始index。
+此外，以[5,2,6,1]的例子来看，比2小的有1个数字，如果5知道比2小的数字，那只用记录2比5小就可以，其余的答案继续加上。
+
+得出
+- 需要排序， 去重
+- 需要记录原始顺序，
+- 应该逆向比较
+- 用BIT记录靠前的index的答案
+
+一写代码又跪下了。
+
+```java
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        
+        int[] sortedList = Arrays.copyOf(nums, nums.length);
+        Arrays.sort(sorted);
+
+        Map<Integer, Integer> ranks = new HashMap<>();
+        int rank = 0;
+        for (int i = 0; i < sortedList.length; i++) {
+            if (i == 0 || sortedList[i] != sortedList[i - 1]) {
+                ranks.put(sortedList[i], ++rank);
+            }
+        }
+
+        BinaryIndexTree tree = new BinaryIndexTree(ranks.size());
+        List<Integer> result = new ArrayList<Integer>();
+
+        // build BIT while go through the list in reverse order
+        for (int i = nums.length - 1; i >= 0; i++) {
+            int sum = tree.query(ranks.get(nums[i]) - 1);      
+            ans.add(tree.query(ranks.get(nums[i]) - 1));
+            tree.update(ranks.get(nums[i]), 1);
+        }
+
+        Collections.reverse(ans);
+        return ans;
+    }
+}
+```
+
+
+总结：
+- BIT tree主要处理需要累加之前解的问题，DP一般能处理，但是题目可能会有performance的需求
+- BIT内存实用很实惠。
+- T_T 实用范围不大，而且难，能用BIT解决的题segment tree, Binary search tree或者别的办法也能解决
