@@ -12,7 +12,8 @@ tag: [leetcode, binary-search]
 4. Median of Two Sorted Arrays
 
 There are two sorted arrays nums1 and nums2 of size m and n respectively.
-Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+Find the median of the two sorted arrays.  
+The overall run time complexity should be O(log (m+n)).
 You may assume nums1 and nums2 cannot be both empty.
 
 Example 1:
@@ -47,13 +48,14 @@ The median is (2 + 3)/2 = 2.5
 1 2 3 4 5     9              15 16
           7 8    10 11 12 13       18 19
 </pre>
-已知list 1 长度是8， list 2 长度是8，一刀砍在index 7和8的中间，分别在array 1的 5/6， array的2/3  
-所以解题的关键是得知那一刀/两刀分别砍在每个array的哪里，但是在全局看来，一定是砍在两个array merge以后的中间，所以得
+已知list 1 长度是8， list 2 长度是8，一刀砍在index 7和8的中间，分别在array 1的 5/6， array 2的2/3  
+所以解题的关键是得知那一刀/两刀分别砍在每个array的哪里  
+但是在全局看来，一定是砍在两个array merge以后的中间，所以得
 
 `arrayCut1 + arrayCut2 = (arrayLength1 + arrayLength2 + 1) / 2`  
 加一是因为单数int 除以二会有损
 
-现在去掉空格看分布  
+去掉空格看分布  
 <pre>
 1 2 3 4 5 9 | 15 16
         7 8 | 10 11 12 13 18 19
