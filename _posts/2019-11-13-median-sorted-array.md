@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Encounter the classic: Median of two sorted array"
-date:   2019-11-07 15:59:53 -0700
+date:   2019-11-13 15:59:53 -0700
 categories: algorithm
 tag: [leetcode, binary-search]
 ---
