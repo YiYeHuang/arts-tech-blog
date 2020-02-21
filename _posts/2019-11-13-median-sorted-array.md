@@ -68,13 +68,6 @@ The median is (2 + 3)/2 = 2.5
 array1left.max < array2right.min  
 array2left.max < array1right.min
 
-如果到极端的情况下  
-<pre>
-1 2 3 4 5 6 | MAX
-        MIN | 7 8 9 10 11 
-</pre>
-为了比较，set array2right.min = Integer MAX, array1right.max = Integer MIN
-
 如果条件不满足
 
 <pre>
@@ -97,6 +90,20 @@ median =
 ```
 median = max(array1left.rightMost, array2left.rightMost)
 ```
+
+如果到极端的情况下  
+<pre>
+1 2 3 4 5 6 | MAX
+        MIN | 7 8 9 10 11 
+</pre>
+为了比较，set array2right.min = Integer MAX, array1right.max = Integer MIN
+
+如果到更极端的情况下  
+<pre>
+    MIN | MAX
+    MIN | 7 8 9 10 11 
+</pre>
+partition A就直接为0， partition B 就直接作为单个数列取median，index为(0 + array B length)/2 
 
 代码:
 为了效率，binary search的时候选择短的array做search
