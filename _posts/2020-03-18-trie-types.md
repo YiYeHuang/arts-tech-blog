@@ -63,6 +63,7 @@ You could think about highly efficient algorithm after the contest.
 Please remember to RESET your class variables declared in class MagicDictionary, 
 as static/class variables are persisted across multiple test cases. Please see here for more details.
 ```
+查字典，输入的单词有且仅能做一次修改，完全符合的也不行，典型的为了出题而出题。
 
 ```java
 public class MagicDictionary {
@@ -114,9 +115,8 @@ public class MagicDictionary {
     }
 }
 ```
-
-去掉特殊条件就是一个简单的找单词的问题。  
-利用递归DFS记录更改字母的次数。
+- build trie tree with words
+- 查找时利用递归DFS记录更改字母的次数，超过一的时候return false
 
 #### 解决问题2
 ```text
@@ -139,6 +139,7 @@ public class MagicDictionary {
  search(".ad") -> true
  search("b..") -> true
  ```
+ 找单词，单词可以有省略的部分，由`.`代替，极为适合用trie的一题
 
  ```java
  public class AddandSearchWord {
@@ -206,7 +207,9 @@ public class MagicDictionary {
 	}
 }
 ```
-add没有任何变化，搜索更加复杂，需要handle 出现`.`的时候的skip问题，最好的办法还是利用递归DFS，分开两个case处理正常的搜索和skip的case。
+- add没有任何变化
+- 搜索比较复杂，需要handle 出现`.`的时候的skip，
+  - 最好的办法还是利用递归DFS，分开两个case处理正常的搜索和skip的case。
 
 #### 解决问题3
 ```text
@@ -237,7 +240,7 @@ The input will only have lower-case letters.
 1 <= root length <= 100
 1 <= sentence words length <= 1000
 ```
-缩写风暴？？
+缩写替代全拼，trie的主场。
 ```java
 public class ReplaceWords {
 
@@ -313,7 +316,7 @@ public class TrieNodeFlex {
 }
 ```
 
-#### 解决问题
+#### 解决问题1
 ```text
 1023. Camelcase Matching
 
@@ -354,7 +357,7 @@ Note:
 1 <= pattern.length <= 100
 All strings consists only of lower and upper case English letters.
 ```
-审题完毕立刻就build了words的Trie Tree, 很美观很直观
+Pattern Matching, 审题完毕立刻就build了words的Trie Tree, 很美观很直观
 ![trie3](/public/img/trie3.png)
 然而搜索写起来怎么都卡手，如果是比赛就跪了  
 题目的size条件不是很苛刻
@@ -463,7 +466,7 @@ The length of words will be in the range [1, 1000].
 The length of words[i] will be in the range [1, 30].
 ```
 ![trie1](/public/img/trie1.png)
-比较刁钻的问题，需要寻找trie tree的最长一枝，每一个node都是wordEndHere
+比较刁钻的问题，需要寻找字典中最长的单词，并且每个单词的每个部分都要存在于字典中，如图，需要找到trie tree的最长一枝，每一个node都是wordEndHere
 
 ```java
 public class LongestWordInDictionary {
@@ -631,3 +634,138 @@ public class TopKFrequentWords {
 - 解题核心思想还是bucket sort
 - 每一个frequency的bucket都是一个Trie tree的Root
 - 倒叙从Frequency最大的开始倒叙遍历直到得到K个单词
+
+### Binary Trie Node 
+特殊形式的Trie Node的变种，解决特殊的问题，Trie的child变成只有Zero和One，完全就是Binary Tree
+```java
+public class TrieBinary {
+	int val;
+    TrieBinary zero;
+    TrieBinary one;
+    boolean isEnd;
+
+    public TrieBinary(int val) {
+        this.val = val;
+    }
+}
+```
+
+#### 解决问题
+```
+421. Maximum XOR of Two Numbers in an Array
+
+Given a non-empty array of numbers, a0, a1, a2, … , an-1, where 0 ≤ ai < 231.
+
+Find the maximum result of ai XOR aj, where 0 ≤ i, j < n.
+
+Could you do this in O(n) runtime?
+
+Example:
+
+Input: [3, 10, 5, 25, 2, 8]
+
+Output: 28
+
+Explanation: The maximum result is 5 ^ 25 = 28.
+```
+越是短小的题目越怀有杀意，  
+分析问题`A XOR B -> 0 1 -> 1`，题目需要找数列中最大的两个XOR  
+
+不难发现，高位越不同的数字(1出现的高位越高)XOR的数字也就越大。 
+
+1. BF做法就是走两次for loop找出最大。速度O(n^2) leetcode劝退速度
+  
+然而也不难得知，一个很大的数字和一个很小的数字出现的概率很大比如
+```
+14 -> 1111
+1  -> 0001
+xor > 1111
+```
+2. two pointer: sort arrar + 两头算。速度 O(nlogn + n)。
+有些许提升，但最优case出现的情况很复杂，何况
+```
+10 -> 1010
+5  -> 0101
+xor > 1111
+```
+的情况也有，two pointer也优势不大。所以必须借助tree来做
+![trie4](/public/img/trie2.png)
+
+- build tree 难度就很大，需要从最高位开始找，所以binary的结果是要倒叙的， 
+题目给的值域比较留情面只会找int的范围，从而得知，tree的每条枝的高度都为31，涵盖所有的bits
+- build完以后需要找到真正开始的root, 即最高位出现child 为 1 和 0的node.
+- 然后dfs走完剩下的tree
+  - 1 的分支
+    - 1 分支child只有1， 找0分支的0 child，没有只能走1
+    - 1 分支child只有0， 找0分支的1 child，没有只能走0
+    - 1 分支有1 和 0 child， 优先走0分支的1，没有只能走0
+  - 0，1两个分支均有两个下一位时
+    - 1分支走1，0分支走0
+    - 1分支走0，0分支走1
+      - 取两条路线并取最大值
+
+```java
+public class MaximumXORTwoNumbersArray {
+
+    TrieBinary root;
+
+    public void insert(int num) {
+        TrieBinary cur = root;
+        /*
+         * 1 << 30 is equal to 1,073,741,824
+         * it's two's complement binary integer is 1000000000000000000000000000000.
+         */
+        int j = 1 << 30;
+        for (int i = 0; i < 31; i++) {
+            // determine whether number's highest digit is 1 or 0
+            int b = (j & num) == 0 ? 0 : 1;
+            if (b == 0 && cur.zero == null) {
+                cur.zero = new TrieBinary();
+            }
+            if (b == 1 && cur.one == null) {
+                cur.one = new TrieBinary();
+            }
+            cur = b == 0 ? cur.zero : cur.one;
+            // j shift to right one position
+            j >>= 1;
+        }
+        cur.isEnd = true;
+        cur.val = num;
+    }
+
+    public int findMaximumXOR(int[] nums) {
+        root = new TrieBinary();
+        if (nums == null || nums.length <= 1) {
+            return 0;
+        }
+
+        for (int n : nums) {
+            insert(n);
+        }
+        TrieBinary cur = root;
+        // as number can be pretty small, get to the hightest root that has both 1 and 0 kid
+        while (cur.one == null || cur.zero == null) {
+            cur = cur.zero != null ? cur.zero : cur.one;
+        }
+
+        return traversal(cur.one, cur.zero);
+    }
+
+    private int traversal(TrieBinary one, TrieBinary zero) {
+        if (one.isEnd && zero.isEnd) {
+            return one.val ^ zero.val;
+        }
+        if (one.zero == null) {
+            return traversal(one.one, zero.zero == null ? zero.one : zero.zero);
+        } else if (one.one == null) {
+            return traversal(one.zero, zero.one == null ? zero.zero : zero.one);
+        } else if (zero.zero == null) {
+            return traversal(one.zero, zero.one);
+        } else if (zero.one == null) {
+            return traversal(one.one, zero.zero);
+        } else {
+            return Math.max(traversal(one.one, zero.zero), traversal(one.zero, zero.one));
+        }
+    }
+}
+```
