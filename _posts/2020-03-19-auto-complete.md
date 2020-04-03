@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Encounter the classic: Design Search Autocomplete System"
+title:  "Encounter Hard: Design Search Autocomplete System"
 date:   2020-03-18 15:59:53 -0700
 categories: algorithm
 tag: [leetcode, trie, heap, hard]
