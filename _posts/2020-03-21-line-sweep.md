@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Encounter the classic: Line Sweep Problems"
+title:  "Encounter Hard: Line Sweep Problems"
 date:   2020-03-20 22:59:53 -0700
 categories: algorithm
 tag: [leetcode, line-sweep, hard]
@@ -38,6 +38,7 @@ rectanges[i].length = 4
 0 <= rectangles[i][j] <= 10^9
 The total area covered by all rectangles will never exceed 2^63 - 1 and thus will fit in a 64-bit signed integer.
 ```
+![line2](/public/img/scan2.png)
 天际线问题的简易解题版，能用`line sweep`, `union find`多种办法解决  
 题目故名思议是需要得到长方形的面积，并且长方形可以随意的重合。
 这题和天际线的解决方法不同，扫描Y轴方向更为简单。但是为了两题一起分析，这里一起做X轴扫描解题。
