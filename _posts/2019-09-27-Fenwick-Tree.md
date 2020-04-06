@@ -3,7 +3,7 @@ layout: post
 title:  "Fenwick Tree"
 date:   2019-09-27 15:59:53 -0700
 categories: algorithm
-tag: [leetcode, binary-index-tree]
+tag: [leetcode, binary-index-tree,hard]
 ---
 
 ## Algorithm

@@ -3,7 +3,7 @@ layout: post
 title:  "Basic Calculator"
 date:   2019-07-20 15:59:53 -0700
 categories: algorithm
-tag: [leetcode, stack]
+tag: [leetcode, stack, hard]
 ---
 
 ## Algorithm
