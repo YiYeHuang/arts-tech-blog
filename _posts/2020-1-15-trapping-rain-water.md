@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Encounter the classic: Trapping Rain Water"
+title:  "Encounter the Hard: Trapping Rain Water"
 date:   2019-11-07 15:59:53 -0700
 categories: algorithm
 tag: [leetcode, two-pointer, BFS, hard]
@@ -8,7 +8,7 @@ tag: [leetcode, two-pointer, BFS, hard]
 
 ## Algorithm
 又到了一看题就被吓傻的经典Hard题
-
+![line4](/public/img/water3.png)
 ```text
 TrappingRainWater
 
@@ -27,7 +27,7 @@ Output: 6
 这题开启了2D图，3D图吓人的传统（包括类似的skyline problem）， 十分容易直接迷失在图里而忽略了对本质算法的思考。
 
 要了解这可以先从 `Container With Most Water`开始
-
+![line4](/public/img/water1.png)
 ```text
 Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai).
 n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0).
@@ -46,7 +46,9 @@ Output: 49
 ```
 
 
+
 #### 说3D 3D就到
+![line4](/public/img/water5.png)
 ```text
 407. Trapping Rain Water II
 
