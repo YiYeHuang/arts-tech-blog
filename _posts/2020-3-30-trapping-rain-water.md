@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "Encounter the Hard: Trapping Rain Water"
-date:   2019-11-07 15:59:53 -0700
+date:   2020-4-30 15:59:53 -0700
 categories: algorithm
-tag: [leetcode, two-pointer, BFS, hard]
+tag: [leetcode, two-pointer, heap, hard]
 ---
 
 ## Algorithm
